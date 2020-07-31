@@ -1,4 +1,6 @@
 from sys import argv
+from save_import import save_import
+from delete_import import delete_import
 
 file_name = ''
 finded_import_objects=set()
@@ -10,12 +12,9 @@ if len(argv) > 1:
 with open(file_name) as f:
     for line in f:
         if 'import ' in line:
-            import_objects = ''.join(line.strip().split('import')[1:]).replace(' ', '')
-            finded_import_objects.update(import_objects.split(','))
+            save_import(line, finded_import_objects)
         else:
-            for import_object in finded_import_objects.copy():
-                if import_object in line:
-                    finded_import_objects.discard(import_object)
+            delete_import(line, finded_import_objects)
 
 print('Imported objects are not used: ', str(finded_import_objects))
 
